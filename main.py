@@ -12,7 +12,7 @@ from vtkmodules.numpy_interface.dataset_adapter import NoneArray
 
 # ABSOLUTE ZER0: pointing along
 #  * positive x, or 90 deg East,
-#  * positive y 0 deg North
+#  * positive y, or 0 deg North,
 #  * positive z, or up
 
 
@@ -142,6 +142,10 @@ point_cloud = pv.PolyData(points)
 
 data = points[:, -1]
 point_cloud["elevation"] = data
+
+zcol = points[:, 2]
+point_cloud = point_cloud.extract_points(np.isfinite(zcol), include_cells=False)
+
 
 plotter.add_mesh(
     point_cloud.delaunay_2d(),
